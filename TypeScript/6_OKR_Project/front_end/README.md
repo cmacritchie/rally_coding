@@ -7,3 +7,5 @@ Set up react-router-dom
 
 set up simple css?
 make requests to server
+
+test with practive proxy next. React-Router-Dom

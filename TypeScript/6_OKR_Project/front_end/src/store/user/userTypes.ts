@@ -18,15 +18,30 @@ export enum  userContants {
 }
 
 interface CreateUserAction {
-    type: typeof userContants.CREATE_USER
+    type: typeof userContants.CREATE_USER,
     payload: User
 }
 
 interface DeleteUserAction {
-    type: typeof userContants.DELETE_USER
+    type: typeof userContants.DELETE_USER,
     payload: string
 }
-//Create other actions.
+
+interface GetAllUsersAction {
+    type: typeof userContants.GET_ALL_USERS,
+    payload: User[]
+}
+
+interface GetUserAction {
+    type: typeof userContants.GET_USER,
+    payload: User
+}
+
+interface PatchUserAction {
+    type: typeof userContants.PATCH_USER,
+    payload: User
+}
 
 
-export type UserActionTypes = CreateUserAction | DeleteUserAction
+
+export type UserActionTypes = CreateUserAction | DeleteUserAction | GetAllUsersAction | GetUserAction | PatchUserAction
