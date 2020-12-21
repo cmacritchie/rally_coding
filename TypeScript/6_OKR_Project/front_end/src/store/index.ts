@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux'
 import { userReducer } from './user/userReducer'
+import { objectiveReducer } from './objective/objectiveReducer'
 
-export default combineReducers({
-    user: userReducer
+//rootReducer
+const rootReducer = combineReducers({
+    users: userReducer,
+    objectives: objectiveReducer
 })
+export default rootReducer
 
-
-//  export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>
  

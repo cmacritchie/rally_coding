@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import User  from '../models/userModel';
 
 export const createUser: RequestHandler = async (req, res) =>{
+    console.log("Hello test");
     const user = new User({
         ...req.body
     })
@@ -10,6 +11,7 @@ export const createUser: RequestHandler = async (req, res) =>{
         await user.save();
         res.status(201).send(user);
     } catch (e) {
+        console.log(e)
         res.status(400).send(e)
     }
 };
@@ -56,6 +58,7 @@ export const patchUser: RequestHandler = async (req, res) => {
 }
 
 export const deleteUser: RequestHandler = async (req, res) => {
+    console.log("delete", req.params.id);
     try {
         const user = await User.findByIdAndDelete(req.params.id)
 

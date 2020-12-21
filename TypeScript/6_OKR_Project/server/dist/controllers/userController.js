@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.patchUser = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 const userModel_1 = __importDefault(require("../models/userModel"));
 exports.createUser = async (req, res) => {
+    console.log("Hello test");
     const user = new userModel_1.default({
         ...req.body
     });
@@ -14,6 +15,7 @@ exports.createUser = async (req, res) => {
         res.status(201).send(user);
     }
     catch (e) {
+        console.log(e);
         res.status(400).send(e);
     }
 };
@@ -53,6 +55,7 @@ exports.patchUser = async (req, res) => {
     }
 };
 exports.deleteUser = async (req, res) => {
+    console.log("delete", req.params.id);
     try {
         const user = await userModel_1.default.findByIdAndDelete(req.params.id);
         if (!user) {
