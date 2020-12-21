@@ -3,6 +3,8 @@ const expressGraphQL = require('express-graphql')
 const schema = require('./schema/schema')
 const app = express()
 const mongoose = require('mongoose')
+const cors = require('cors')
+const bodyParser = require('body-parser')
 
 //database
 const connectString = "mongodb://127.0.0.1:27017/library";
@@ -15,11 +17,16 @@ mongoose.connect(connectString, {
         .catch(err => console.log("error connecting to mongodb", err))
 
 
+
+
 //setGraphQL Schema
-app.use('/graphql', expressGraphQL({
+//all queries will go through this route
+app.use('/graphql', cors(), bodyParser.json(), expressGraphQL({
     schema,
     graphiql: true
 }))
+
+
 
 //Start Server
 app.listen(4000, () => {

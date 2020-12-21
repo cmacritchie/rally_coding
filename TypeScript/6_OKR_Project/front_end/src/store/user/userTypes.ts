@@ -1,12 +1,13 @@
-export interface User {
-    id: string
+export interface IUser {
+    _id: string,
     name: string,
     age: number,
     position: string
 }
 
 export interface UserState {
-    users: User[]
+    usersLoaded: boolean
+    users: IUser[]
 }
 
 export enum  userContants {
@@ -19,7 +20,7 @@ export enum  userContants {
 
 interface CreateUserAction {
     type: typeof userContants.CREATE_USER,
-    payload: User
+    payload: IUser
 }
 
 interface DeleteUserAction {
@@ -29,17 +30,17 @@ interface DeleteUserAction {
 
 interface GetAllUsersAction {
     type: typeof userContants.GET_ALL_USERS,
-    payload: User[]
+    payload: IUser[]
 }
 
 interface GetUserAction {
     type: typeof userContants.GET_USER,
-    payload: User
+    payload: IUser
 }
 
 interface PatchUserAction {
     type: typeof userContants.PATCH_USER,
-    payload: User
+    payload: IUser
 }
 
 

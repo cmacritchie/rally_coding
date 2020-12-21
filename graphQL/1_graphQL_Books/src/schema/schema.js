@@ -1,6 +1,7 @@
 const graphql = require('graphql')
 const Book = require('../models/book')
 const Author = require('../models/author')
+const Library = require('../models/library')
 
 const {
     GraphQLObjectType,
@@ -25,6 +26,13 @@ const BookType = new GraphQLObjectType({
             resolve(parent, args) {
                 return Author.findById(parent.authorID)
             }
+        },
+        libraries: {
+            type: new GraphQLList(LibraryType),
+            async resolve(parent, args) {
+                const bookLibraries = await Book.findById(parent.id).populate('libraries').exec()
+                return bookLibraries.libraries
+            }
         }
     })
 })
@@ -39,6 +47,22 @@ const AuthorType = new GraphQLObjectType({
             type: new GraphQLList(BookType),
             resolve(parent, args) {
                 return Book.find({ authorID: parent.id})
+            }
+        }
+    })
+})
+
+const LibraryType = new GraphQLObjectType({
+    name: 'Library',
+    fields: () => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        address: { type: GraphQLString },
+        books: {
+            type: new GraphQLList(BookType),
+            async resolve(parent, args) {
+                const libraryWBooks =  await Library.findById(parent.id).populate('books').exec()
+                return libraryWBooks.books
             }
         }
     })
@@ -75,10 +99,24 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 return Author.find({})
             }
+        },
+        libraries: {
+            type: new GraphQLList(LibraryType),
+            resolve(parent, args) {
+                return Library.find({})
+            },
+        },
+        library: {
+            type: LibraryType,
+            args: { id: { type: GraphQLID }},
+            resolve(parent, { id }) {
+                return Library.findById(id)
+            }
         }
     }
 })
 
+//can also add delete and edit I guess
 const Mutation = new GraphQLObjectType({
     name:'Mutation',
     fields: {
@@ -97,6 +135,26 @@ const Mutation = new GraphQLObjectType({
                 return author.save();
             }
         },
+        deleteAuthor: {
+            type: AuthorType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parentValue, { id }) {
+                return Author.findByIdAndDelete(id)
+            }
+        },
+        editAuthor: {
+            type: AuthorType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                age: { type: new GraphQLNonNull(GraphQLInt)}
+            },
+            resolve(parentValue, { id, ...author }) {
+                return Author.findByIdAndUpdate(id, author, { new: true, runValidators: true})
+            }
+        },
         addBook: {
             type: BookType,
             args: {
@@ -111,6 +169,60 @@ const Mutation = new GraphQLObjectType({
                     authorID: args.authorID
                 })
                 return book.save()
+            }
+        },
+        deleteBook: {
+            type: BookType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve( parentValue, { id }) {
+                return Book.findByIdAndDelete(id)
+            }
+        },
+        addLibrary: {
+            type: LibraryType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                address: { type: new GraphQLNonNull(GraphQLString)},
+            },
+            resolve(parentValue, {name, address}) {
+                let library = new Library({
+                    name, 
+                    address
+                })
+                return library.save()
+            }
+        },
+        deleteLibrary: {
+            type: LibraryType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parentValue, { id }) {
+                return Library.findByIdAndDelete(id)
+            }
+        },
+        addBookToLibrary: {
+            type: LibraryType,
+            args: {
+                bookId: { type: new GraphQLNonNull(GraphQLID)},
+                libId: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            async resolve(parent, { bookId, libId }) {
+                await Book.findByIdAndUpdate(bookId, { $push: { libraries: libId }});
+                return await Library.findByIdAndUpdate(libId, { $push: { books: bookId }}, { returnOriginal: false });
+            }
+        },
+        removeBookFromLibrary: {
+            type: LibraryType,
+            args: {
+                bookId: { type: new GraphQLNonNull(GraphQLID)},
+                libId: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            async resolve(parent, { bookId, libId }) {
+                await Book.findByIdAndUpdate(bookId, { $pull: { libraries: libId }});
+                return await Library.findByIdAndUpdate(libId, { $pull: { books: bookId }}, { returnOriginal: false });
             }
         }
     }

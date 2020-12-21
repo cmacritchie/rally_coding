@@ -1,5 +1,5 @@
-export interface Objective {
-    // _id: string
+export interface IObjective {
+  _id: string
   objDescription: string
   owner: string
   createdAt?: string
@@ -8,10 +8,13 @@ export interface Objective {
 
 //must be a string with the result being objective
 export interface ObjectiveState {
-    [prop: string] : Objective
+    objectivesLoaded: Boolean
+    objectives: {
+      [prop: string] : IObjective[]
+    }
 }
 
-export enum  ObjectiveContants {
+export enum  ObjectiveConstants {
   CREATE_OBJECTIVE = "CREATE_OBJECTIVE",
   GET_OBJECTIVES = "GET_OBJECTIVES",
   GET_OBJECTIVE = "GET_OBJECTIVE",
@@ -20,28 +23,28 @@ export enum  ObjectiveContants {
 }
 
 interface CreateObjectiveAction {
-  type: typeof ObjectiveContants.CREATE_OBJECTIVE,
-  payload: Objective
+  type: typeof ObjectiveConstants.CREATE_OBJECTIVE,
+  payload: IObjective
 }
 
 interface DeleteObjectiveAction {
-  type: typeof ObjectiveContants.DELETE_OBJECTIVE,
-  payload: string
+  type: typeof ObjectiveConstants.DELETE_OBJECTIVE,
+  payload: IObjective
 }
 
 interface GetAllObjectivesAction {
-  type: typeof ObjectiveContants.GET_OBJECTIVES,
-  payload: Objective[]
+  type: typeof ObjectiveConstants.GET_OBJECTIVES,
+  payload: IObjective[]
 }
 
 interface GetObjectiveAction {
-  type: typeof ObjectiveContants.GET_OBJECTIVE,
-  payload: Objective
+  type: typeof ObjectiveConstants.GET_OBJECTIVE,
+  payload: IObjective
 }
 
 interface PatchObjectiveAction {
-  type: typeof ObjectiveContants.PATCH_OBJECTIVE,
-  payload: Objective
+  type: typeof ObjectiveConstants.PATCH_OBJECTIVE,
+  payload: IObjective
 }
 
 
