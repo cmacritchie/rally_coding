@@ -1,0 +1,3 @@
+# Typescript Rally coding
+A number of practice excercises I used to learn Typescript. Many of these excercises were learned or used in [Maximilian Schwarzmüller's Typescript Course](https://www.udemy.com/course/understanding-typescript/).
+I put together a capestone project called [OKR_PROJECT](https://github.com/cmacritchie/rally_coding/tree/master/TypeScript/6_OKR_Project) using everything I learned.

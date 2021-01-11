@@ -10,4 +10,3 @@ export interface Result {
 export interface ResultState {
     [prop: string] : Result
 }
-
