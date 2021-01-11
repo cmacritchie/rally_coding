@@ -1,47 +1,22 @@
-First Graphql Project using express, Node, Mongodb
+# Graphql Book-Library project
+
+This is an exprimental graphql project using the following technologies:
+
+- node.js
+- mongodb
+- react
+- appollo-client
+- apollo-server
+
+The purpose of this project was to learn graphql on the backend and implement a front-end graphql consuming client. to setup and run this project, follow these steps:
+
+1. in src/index.js adjust the connectString to match the address of your mongodb database.
+1. in the src folder run `npm install` to install server dependencies
+1. run `npm run dev` to run the project graphql server
+1. the backend server is running locally on port 4000 
+    - you can view the self documenting Graphql ide @ /graphqil: (http://localhost:4000/graphql)
+1. in the client folder run `npm install` to install client dependencies
+1. in the client folder run `npm run start` to run the client side server
 
 
-npm 
-graphql-playground-middleware-express
-graphiql
-graphql-tag
-graphql-tools
-https://medium.com/@utkarshprakash/setting-up-graphql-server-with-nodejs-express-and-mongodb-d72fba13216
-https://www.apollographql.com/docs/react/
-
-Next: Add Mutations (CRUD OPERATIONS)
-
-then add front end
-
-start project:
--npm run dev
-- http://localhost:4000/graphql
-
-
-
-e.g. fetches
-{
-	authors{
-    id
-    name 
-  }
-}
-
-{
-    books {
-        id,
-        name, 
-        pages, 
-        author
-    }
-}
-
-mutation {
-  addBook(name: "Brave New Soda", pages:363, authorID: "5f2957fcf6d12c5f74de88bd") {
-    name
-    pages
-    author{
-      name
-    }
-  }
-}
+Now the project is up and running; go to http://localhost:3000/#/ to view the application.
