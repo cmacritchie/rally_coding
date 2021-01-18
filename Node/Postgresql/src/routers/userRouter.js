@@ -1,22 +1,13 @@
 const express = require('express')
-
+const User = require('../models/userModel')
 
 const router = new express.Router()
 
-router.post('/api/test', async (req, res) => {
-    const testResponse = {
-        message: 'hello world'
-    }
-    
-    try {
-        res.status(201).send(testResponse)
-    } catch(e) {
-        res.status(400).send(e)
-    }
-})
-
-// router.post('/api/user', async (req, res) => {
-    
-// })
+router.get('/api/user', User.fetchAll)
+router.get('/api/user/:id', User.fetchOne)
+router.post('/api/user', User.post)
+router.patch('/api/user/:id', User.patch)
+router.delete('/api/user/:id', User.delete)
+router.get('/api/userposts/:id', User.fetchUserPosts)
 
 module.exports = router
