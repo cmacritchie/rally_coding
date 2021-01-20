@@ -17,8 +17,11 @@ https://dataschool.com/learn-sql/how-to-start-a-postgresql-server-on-mac-os-x/
 https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simple-express-server-with-an-orm-gcm
 
 
+https://www.codementor.io/@mayowa.a/how-to-build-a-simple-session-based-authentication-system-with-nodejs-from-scratch-6vn67mcy3
 
+Tormorrow Cookie Session setup.
 
+static login.
 
 CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, token TEXT)
 INSERT INTO users(name, email, password) VALUES ('Hugh Jackman', 'jackman@xmen.com', 'swordfish' )
