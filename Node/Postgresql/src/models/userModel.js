@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
 const database = require('../db/postgresql');
 const BlogPost = require('./blogModel');
 const { DataTypes } = Sequelize
@@ -30,7 +31,21 @@ const userSchema = {
     }
 }
 
-const User = database.define('Users', userSchema)
+const userOptions = {
+    hooks: {
+        beforeCreate: (user) => {
+            // console.log("this is the new user", user)
+            user.password = bcrypt.hashSync(user.password, 8);
+        }
+    },
+    instanceMethods: {
+        validPassword: function(password) {
+            return bcrypt.compareSync(password, this.password)
+        }
+    }
+}
+
+const User = database.define('Users', userSchema, userOptions)
 // User.sync({force: true})
 // User.hasMany(BlogPost, {foreignKey: '_user', sourceKey: 'id'})
 // console.log(User)
@@ -76,6 +91,10 @@ User.post = async (req, res) => {
     })
     try {
         await user.save()
+        console.log(user.dataValues)
+        req.session.user = user.dataValues.name
+        console.log('session', req.session)
+        // console.log('session', req.session)
         res.status(201).send(user)
     } catch (e) {
         res.status(400).send(e)

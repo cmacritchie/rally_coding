@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const database = new Sequelize('database URL')
+const database = new Sequelize(process.env.POSTGRESDB)
 
 try {
     database.authenticate();
