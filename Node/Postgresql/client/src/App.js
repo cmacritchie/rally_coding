@@ -1,35 +1,21 @@
 import React, { useEffect } from 'react'
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios'
+import { HashRouter,  Route } from 'react-router-dom';
+import NavBar from './components/NavBar'
+
+import Home from './pages/Home'
+import Login from './pages/Login'
+import NewArticle from './pages/NewArticle'
+
 
 function App() {
-
-  useEffect(() => {
-    async function fetchData() {
-      const test = await axios.get('/api/')
-      console.log(test)
-    }
-    fetchData()
-  },[])
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <NavBar />
+      <Route exact path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/post-article" component={NewArticle} />
+      <Route path="/post-article/:id" component={NewArticle} />
+    </HashRouter>
   );
 }
 
