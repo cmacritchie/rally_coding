@@ -3,13 +3,15 @@ import { NavLink } from 'react-router-dom';
 
 const NavBar = () => {
     return(
-        <ul>
+    <div className="nav-bar-wrapper">
+        <ul className="nav-bar">
             <li><NavLink to='/'>BlogPosts</NavLink></li>
             <li><NavLink to='/login'>Login</NavLink></li>
             <li><NavLink to='/post-article'>New Article</NavLink></li>
-            <li>Edit User</li>
-            <li>Logout</li>
+            <li><span>Edit User</span></li>
+            <li><span>Logout</span></li>
         </ul>
+    </div>
     )
 }
 

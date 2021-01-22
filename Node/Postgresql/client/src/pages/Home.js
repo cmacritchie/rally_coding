@@ -24,8 +24,22 @@ const Home = ({ getArticles, blog }) => {
     }
     
     if(blog.articles.length > 0) {
-        console.log(blog.articles)
-        return <h1> We got some blog posts here</h1>
+        return (
+        <div className="blog-posts">
+                {blog.articles.map(article => {
+                    return (
+                        <div className="article">
+                            <h3 className="article-title">{article.title}</h3>
+                            <span> created: {article.createdAt}</span>
+                            <br />
+                            <span>author: test</span>
+                            <p className="article-content">{article.content}</p>
+                        </div>
+                    )
+                })
+                }
+        </div>
+        )
     }
 
     return <h1>What's going on?</h1>
