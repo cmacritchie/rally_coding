@@ -22,6 +22,7 @@ https://www.codementor.io/@mayowa.a/how-to-build-a-simple-session-based-authenti
 Tormorrow Cookie Session setup.
 
 static login.
+Protected Routes
 
 CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, token TEXT)
 INSERT INTO users(name, email, password) VALUES ('Hugh Jackman', 'jackman@xmen.com', 'swordfish' )

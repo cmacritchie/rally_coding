@@ -14,7 +14,7 @@ function App() {
       <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/post-article" component={NewArticle} />
-      <Route path="/post-article/:id" component={NewArticle} />
+      <Route path="/post-article/:articleid" component={NewArticle} />
     </HashRouter>
   );
 }
