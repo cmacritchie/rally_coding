@@ -1,7 +1,8 @@
 const cookieCheck  = (req, res, next) => {
-    console.log('cookie, check', req.cookies, req.session)
+    // console.log('userId, sessionUser', req.cookies.user_sid, req.session.user)
     if (req.cookies.user_sid && !req.session.user) {
-        res.clearCookie('user_sid');        
+        console.log('clear user')
+        res.clearCookie('user_sid');
     }
     next();
 }

@@ -2,25 +2,26 @@ import React, { useEffect, useState} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Credentials from '../components/Credentials'
-import { loginUser } from '../actions/userActions'
+import { registerUser } from '../actions/userActions'
 
 const mapDispatchToProps = dispatch => bindActionCreators(
-    { loginUser },
+    { registerUser },
     dispatch,
 )
 
-const Login = ({ loginUser }) => {
+const Signup = ({ registerUser }) => {
 
     const submit = (info) => {
-        loginUser(info)
+        console.log(info)
+        registerUser(info)
     }
 
     return(
         <>
-        <h1>Login</h1>
-        <Credentials onSubmit={submit} />
+        <h1> Sign Up</h1>
+        <Credentials onSubmit={submit} email={true} />
         </>
     )
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(null, mapDispatchToProps)(Signup)

@@ -8,17 +8,39 @@ export const UserActionTypes = {
     LOGOUT: 'LOGOUT',
 }
 
+export const getMe = () => async dispatch => {
+
+    try{
+        const res = await axios.get('/api/me',);
+        console.log("good", res)
+        dispatch({
+            type: UserActionTypes.LOGIN_SUCCESS,
+            payload: res.data
+        })
+    
+    } catch (e) {
+        console.log('bad', e)
+    }
+}
+
 export const registerUser = (newUser) => async dispatch => {
-    const res = await axios.post('localhost:5000/api/user', newUser);
-    dispatch({
-        type: UserActionTypes.REGISETER_USER,
-        payload: res.data
-    })
+    console.log("inside action ",newUser)
+    try{
+        const res = await axios.post('/api/user', newUser);
+        console.log(res);
+        dispatch({
+            type: UserActionTypes.REGISETER_USER,
+            payload: res.data
+        })
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export const loginUser = (credentials) => async dispatch => {
     try{
         const res = await axios.post('/api/login', credentials)
+        console.log('credentials, ', res)
         dispatch({
             type: UserActionTypes.LOGIN_SUCCESS,
             payload: res.data
@@ -32,6 +54,7 @@ export const loginUser = (credentials) => async dispatch => {
 }
 
 export const logout = () => async dispatch => {
+    console.log('logout');
     try {
         const res = await axios.post('/api/logout')
         dispatch({ type: UserActionTypes.LOGOUT })

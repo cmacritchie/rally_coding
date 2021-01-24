@@ -38,11 +38,11 @@ const userOptions = {
             user.password = bcrypt.hashSync(user.password, 8);
         }
     },
-    instanceMethods: {
-        validPassword: function(password) {
-            return bcrypt.compareSync(password, this.password)
-        }
-    }
+    // instanceMethods: {
+    //     validPassword: function(password) {
+    //         return bcrypt.compareSync(password, this.password)
+    //     }
+    // }
 }
 
 const User = database.define('Users', userSchema, userOptions)
@@ -52,6 +52,17 @@ const User = database.define('Users', userSchema, userOptions)
 // console.log(BlogPost)
 // User.hasMany(BlogPost, {foreignKey: '_user', sourceKey: 'id'})
 // BlogPost.belongsTo(User, {foreignKey: '_user', targetKey: 'id'})
+
+User.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password)
+}
+
+User.prototype.toJSON = function() {
+    const user = this.dataValues
+    delete user.password
+    delete user.token
+    return user
+}
 
 User.fetchAll = async (req, res) => {
     try {
@@ -72,6 +83,21 @@ User.fetchOne = async (req, res) => {
         res.send(user)
     } catch (e) {
         res.status(500).send()
+    }
+}
+
+User.login = async (req, res) => {
+    const { name, password } = req.body;
+    const user = await User.findOne({ where: { name }})
+    if(!user) {
+        return res.status(404).send()
+    }
+    else if(!user.validPassword(password)) {
+        return res.status(404).send()
+    }
+    else {
+        req.session.user = user.dataValues
+        return res.status(200).send(user.toJSON())
     }
 }
 
@@ -121,8 +147,7 @@ User.delete = async (req, res) => {
     }
 }
 
-//logout
-//login
+
 
 
 

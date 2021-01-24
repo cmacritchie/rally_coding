@@ -29,6 +29,7 @@ const port = process.env.PORT || 5000
 //using
 app.set('trust proxy', 1)
 // app.use(express.json())
+app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));  //parse parameters to req.body
 app.use(cookieParser()); //access cookies in browser
@@ -48,6 +49,19 @@ app.use(session({
         expires: 600000
     }
 }))
+
+//production?
+// var sess = {
+//     secret: 'keyboard cat',
+//     cookie: {}
+//   }
+  
+//   if (app.get('env') === 'production') {
+//     app.set('trust proxy', 1) // trust first proxy
+//     sess.cookie.secure = true // serve secure cookies
+//   }
+  
+// app.use(session(sess))
 
 app.use(cookieCheck)
 

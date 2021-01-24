@@ -1,18 +1,24 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { postArticle, editArticle } from '../actions/blogActions'
 
-
+const mapDispatchToProps = dispatch => bindActionCreators(
+    { postArticle },
+    dispatch,
+)
 
 const ArticleForm = ({existingArticle, onSubmit}) => {
     const [article, setArticle] = useState(existingArticle)
 
     return(
-        <form onSubmit={() => onSubmit(article)}>
+        <form id="article-form" onSubmit={() => onSubmit(article)}>
             <label htmlFor="article-title">Title</label><br />
-            <input id="article-title" value={existingArticle.title} onChange={e=>setArticle({...existingArticle, title: e.target.value })}></input><br />
+            <input id="article-title" value={article.title} onChange={e=>setArticle({...article, title: e.target.value })}></input><br />
             <label htmlFor="article-content">Content</label><br/>
-            <textarea id="article-content" value={existingArticle.content} onChange={e=>setArticle({...existingArticle, content:e.target.value})} /><br />
+            <textarea id="article-content" value={article.content} onChange={e=>setArticle({...article, content:e.target.value})} /><br />
+            <button type="submit" form="article-form" value="Submit">Submit</button>
         </form>
     )
 }
@@ -24,7 +30,7 @@ ArticleForm.defaultProps = {
     }
 }
 
-const ArticleWrapper = ({ match, history }) => {
+const ArticleWrapper = ({ match, history, postArticle, editArticle }) => {
 
     const [fetchedArticle, setFetchedArticle] = useState({ title:'', content:''})
     
@@ -43,9 +49,12 @@ const ArticleWrapper = ({ match, history }) => {
     const submitHandler = (article) => {
         if(article.hasOwnProperty('id')) {
             console.log("patch article ")
+            //need to fix this.
+            editArticle(article)
         }
         else {
-            console.log("creat User")
+            console.log("creat Article")
+            postArticle(article)
         }
         // history.push('/')
     }
@@ -56,4 +65,4 @@ const ArticleWrapper = ({ match, history }) => {
 }
 
 
-export default ArticleWrapper
+export default connect(null, mapDispatchToProps)(ArticleWrapper)
