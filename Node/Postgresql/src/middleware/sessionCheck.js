@@ -5,6 +5,7 @@ const sessionChecker = (req, res, next) => {
         console.log('You are good to go');
         next()
     } else {
+        console.log('you are not good to go')
         next();
     }    
 };

@@ -40,3 +40,7 @@ export const editArticle = (editArticle) => async dispatch => {
         payload: res.data
     })
 }
+
+export const registerUser =() => {
+    console.log("this is a fucking joke")
+}
