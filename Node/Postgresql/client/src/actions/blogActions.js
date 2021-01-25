@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { store } from '../index.js'
 // import { history }
 
 export const BlogActionTypes = {
@@ -10,37 +11,42 @@ export const BlogActionTypes = {
 
 export const getArticles = () => async dispatch => {
     const res = await axios.get('/api/blogpost')
-    console.log(res)
     dispatch({
         type: BlogActionTypes.FETCH_ARTICLES,
-        payload: res.data.blogposts
+        payload: res.data
     }) 
 }
 
-export const postArticle = (article) => async dispatch => {
+export const postArticle = (article, history) => async dispatch => {
+    const user = store.getState().user
     const res = await axios.post('/api/blogpost', article)
     dispatch({
         type: BlogActionTypes.POST_ARTICLE,
-        payload: res.data
+        payload: { ...res.data, User: { name: user.userInfo.name }}
     })
+    history.push('/')
 }
 
 export const deleteArticle = (articleId) => async dispatch => {
-    const res = await axios.delete(`/api/blogpost/${articleId}`)
-    dispatch({
-        type: BlogActionTypes.DELETE_ARTICLE,
-        payload: articleId
-    })
+   try{
+       await axios.delete(`/api/blogpost/${articleId}`)
+       dispatch({
+           type: BlogActionTypes.DELETE_ARTICLE,
+           payload: articleId
+       })
+   } catch (e) {
+    console.log("error", e)
+   }
 }
 
-export const editArticle = (editArticle) => async dispatch => {
-    const res = await axios.patch(`/api/blogpost/${editArticle.id}`)
+export const editArticle = (editArticle, history) => async dispatch => {
+    const user = store.getState().user
+    const res = await axios.patch(`/api/blogpost/${editArticle.id}`, editArticle)
+    console.log("in edit", editArticle )
+    debugger
     dispatch({
         type: BlogActionTypes.EDIT_ARTICLE,
-        payload: res.data
+        payload: { ...res.data, User: { name: user.userInfo.name }}
     })
-}
-
-export const registerUser =() => {
-    console.log("this is a fucking joke")
+    history.push('/')
 }

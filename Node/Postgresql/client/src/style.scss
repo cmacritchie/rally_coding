@@ -36,6 +36,19 @@ h1 {
   }
 }
 
+.article {
+  background-color: peachpuff;
+  border:  1px solid black;
+  border-radius: 10px;;
+  margin: 20px;
+  padding: 20px;
+
+  &-info {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 // .nav-bar {
 //   // background-color: aquamarine;
 //   display: flex;
