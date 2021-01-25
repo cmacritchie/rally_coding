@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const database = require('../db/postgresql');
-const BlogPost = require('./blogModel');
 const { DataTypes } = Sequelize
 
 const userSchema = {
@@ -64,88 +63,88 @@ User.prototype.toJSON = function() {
     return user
 }
 
-User.fetchAll = async (req, res) => {
-    try {
-      const users = await User.findAll();
-      return res.send({ users });
-    } catch (error) {
-      return res.send(error);
-    }
-};
+// User.fetchAll = async (req, res) => {
+//     try {
+//       const users = await User.findAll();
+//       return res.send({ users });
+//     } catch (error) {
+//       return res.send(error);
+//     }
+// };
 
-User.fetchOne = async (req, res) => {
-    try {
-        const user = await User.findOne({ where: { id: req.params.id } });
+// User.fetchOne = async (req, res) => {
+//     try {
+//         const user = await User.findOne({ where: { id: req.params.id } });
 
-        if(!user) {
-            return res.status(404).send()
-        }
-        res.send(user)
-    } catch (e) {
-        res.status(500).send()
-    }
-}
+//         if(!user) {
+//             return res.status(404).send()
+//         }
+//         res.send(user)
+//     } catch (e) {
+//         res.status(500).send()
+//     }
+// }
 
-User.login = async (req, res) => {
-    const { name, password } = req.body;
-    const user = await User.findOne({ where: { name }})
-    if(!user) {
-        return res.status(404).send()
-    }
-    else if(!user.validPassword(password)) {
-        return res.status(404).send()
-    }
-    else {
-        req.session.user = user.dataValues
-        return res.status(200).send(user.toJSON())
-    }
-}
+// User.login = async (req, res) => {
+//     const { name, password } = req.body;
+//     const user = await User.findOne({ where: { name }})
+//     if(!user) {
+//         return res.status(404).send()
+//     }
+//     else if(!user.validPassword(password)) {
+//         return res.status(404).send()
+//     }
+//     else {
+//         req.session.user = user.dataValues
+//         return res.status(200).send(user.toJSON())
+//     }
+// }
 
-User.fetchUserPosts = async (req, res) => {
-    try {
-        const userPosts = await User.findOne({ include: [{model:BlogPost}], where: { id: req.params.id } });
-        console.log(userPosts)
-        return res.send(userPosts);
-    } catch (e) {
-        return res.send(e);
-    }
-}
+// User.fetchUserPosts = async (req, res) => {
+//     try {
+//         const userPosts = await User.findOne({ include: [{model:BlogPost}], where: { id: req.params.id } });
+//         console.log(userPosts)
+//         return res.send(userPosts);
+//     } catch (e) {
+//         return res.send(e);
+//     }
+// }
 
-User.post = async (req, res) => {
-    const user = User.build({
-        ...req.body
-    })
-    try {
-        await user.save()
-        console.log(user.dataValues)
-        req.session.user = user.dataValues.name
-        console.log('session', req.session)
-        // console.log('session', req.session)
-        res.status(201).send(user)
-    } catch (e) {
-        res.status(400).send(e)
-    }
-}
+// User.post = async (req, res) => {
+//     const user = User.build({
+//         ...req.body
+//     })
+//     try {
+//         await user.save()
+//         console.log(user.dataValues)
+//         req.session.user = user.dataValues.name
+//         console.log('session', req.session)
+//         // console.log('session', req.session)
+//         res.status(201).send(user)
+//     } catch (e) {
+//         res.status(400).send(e)
+//     }
+// }
 
-User.patch = async (req, res) => {
+// User.patch = async (req, res) => {
     
-    try {
-        const updatedUser = await User.update({ ...req.body }, {returning: true, where: {id: req.params.id}})
-        return res.send(updatedUser)
-    } catch (e) {
-        res.status(400).send(e)
-    }
-}
+//     try {
+//         const updatedUser = await User.update({ ...req.body }, {returning: true, where: {id: req.params.id}})
+//         return res.send(updatedUser)
+//     } catch (e) {
+//         res.status(400).send(e)
+//     }
+// }
 
-User.delete = async (req, res) => {
-    try {
-        const userDelete = await User.destroy({ where: { id: req.params.id } })
-        console.log(userDelete)
-        res.sendStatus(200)
-    } catch (e) {
-        res.status()
-    }
-}
+// User.delete = async (req, res) => {
+//     try {
+//         const userDelete = await User.destroy({ where: { id: req.params.id } })
+//         console.log(userDelete)
+//         res.sendStatus(200)
+//     } catch (e) {
+//         res.status()
+//     }
+// }
 
 
 

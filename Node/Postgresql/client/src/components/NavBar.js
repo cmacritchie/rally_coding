@@ -14,16 +14,20 @@ const NavBar = () => {
     return(
     <div className="nav-bar-wrapper">
         <ul className="nav-bar">
-            <li><NavLink to='/'>BlogPosts</NavLink></li>
-            <li><NavLink to='/login'>Login</NavLink></li>
-            <li><NavLink to='/sign-up'>Signup</NavLink></li>
-            <li><NavLink to='/post-article'>New Article</NavLink></li>
-            <li><span>Edit User</span></li>
-            <li><button onClick={()=> test()}>Logout</button></li>
+            <li><NavLink to='/'>Home</NavLink></li>
+            {!user.isAuthenticated &&
+            <>
+                <li><NavLink to='/login'>Login</NavLink></li>
+                <li><NavLink to='/sign-up'>Signup</NavLink></li>
+            </>
+            }
             {user.isAuthenticated &&
-                <li>
-                    <span>Welcom {user.userInfo.name}</span>
-                </li>
+            <>
+                <li><NavLink to='/post-article'>New Article</NavLink></li>
+                <li><NavLink to='/user-settings'>Edit User</NavLink></li>
+                <li><a onClick={()=> test()}>Logout</a></li>
+                <li><span>Welcome {user.userInfo.name}</span></li>
+            </>
             }
         </ul>
     </div>

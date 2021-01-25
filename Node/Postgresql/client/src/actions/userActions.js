@@ -1,11 +1,12 @@
 import axios from 'axios'
-// import { history }
+
 
 export const UserActionTypes = { 
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGIN_FAIL: 'LOGIN_FAIL',
     REGISETER_USER: 'REGISTER_USER',
     LOGOUT: 'LOGOUT',
+    FAIL_ACKNOWLEDGE: 'FAIL_ACKNOWLEDGE'
 }
 
 export const getMe = () => async dispatch => {
@@ -23,7 +24,7 @@ export const getMe = () => async dispatch => {
     }
 }
 
-export const registerUser = (newUser) => async dispatch => {
+export const registerUser = (newUser, history) => async dispatch => {
     console.log("inside action ",newUser)
     try{
         const res = await axios.post('/api/user', newUser);
@@ -32,24 +33,23 @@ export const registerUser = (newUser) => async dispatch => {
             type: UserActionTypes.REGISETER_USER,
             payload: res.data
         })
+        history.push('/')
     } catch (e) {
-        console.log(e)
+        dispatch({ type: UserActionTypes.LOGIN_FAIL })
     }
 }
 
-export const loginUser = (credentials) => async dispatch => {
+export const loginUser = (credentials, history) => async dispatch => {
     try{
         const res = await axios.post('/api/login', credentials)
-        console.log('credentials, ', res)
         dispatch({
             type: UserActionTypes.LOGIN_SUCCESS,
             payload: res.data
         })
+        history.push('/')
     } catch (e) {
         console.log(e)
-        dispatch({
-            type: UserActionTypes.LOGIN_FAIL,
-        })
+        dispatch({ type: UserActionTypes.LOGIN_FAIL })
     }
 }
 
@@ -61,4 +61,10 @@ export const logout = () => async dispatch => {
     } catch (e) {
         console.log(e)
     }
+}
+
+export const failAcknowledge = () => async dispatch => {
+    dispatch({
+        type: UserActionTypes.FAIL_ACKNOWLEDGE
+    })
 }

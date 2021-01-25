@@ -1,27 +1,36 @@
-import React, { useEffect, useState} from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Credentials from '../components/Credentials'
-import { registerUser } from '../actions/userActions'
+import { registerUser, failAcknowledge } from '../actions/userActions'
+import { useHistory } from "react-router-dom";
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-    { registerUser },
-    dispatch,
-)
+const Signup = () => {
+    const history = useHistory();
+    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user)
+    
 
-const Signup = ({ registerUser }) => {
+    useEffect(() => {
+        return () => { 
+            if(user.loginError) {
+                dispatch(failAcknowledge()) 
+            }
+        }
+    },[])
 
     const submit = (info) => {
-        console.log(info)
-        registerUser(info)
+        dispatch(registerUser(info, history))
     }
 
     return(
         <>
         <h1> Sign Up</h1>
         <Credentials onSubmit={submit} email={true} />
+        {(user.loginError && !user.failAcknowledge) &&
+            <h1>Failed to Login User</h1>
+        }
         </>
     )
 }
 
-export default connect(null, mapDispatchToProps)(Signup)
+export default Signup
