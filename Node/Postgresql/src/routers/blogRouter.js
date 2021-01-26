@@ -13,6 +13,7 @@ const upload = multer({
         if (!file.originalname.match(/\.(jpg|jpeg|png|PNG)$/)) {   //only these files types
             return cb(new Error('please upload an image'))
         }
+        console.log('file', file)
         cb(undefined, true)
     }
 })
@@ -48,12 +49,15 @@ router.get('/api/blogpost/:id', async (req, res) => {
 // router.post('/api/blogpost',sessionChecker, async (req, res) => {
     router.post('/api/blogpost', upload.single('upload'), async (req, res) => {   //uses upload header in key
     try {
+        console.log('body', req.body)
+        console.log('file buffer', req.file)
         const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
-        
+        console.log('buffer made')
         const blogpost = BlogPost.build({
             ...req.body,
             imageUrl: buffer
         })
+        console.log('blogpost', blogpost)
         await blogpost.save()
         res.status(201).send(blogpost)
     } catch (e) {

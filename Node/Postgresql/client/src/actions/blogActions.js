@@ -18,13 +18,28 @@ export const getArticles = () => async dispatch => {
 }
 
 export const postArticle = (article, history) => async dispatch => {
-    const user = store.getState().user
-    const res = await axios.post('/api/blogpost', article)
-    dispatch({
-        type: BlogActionTypes.POST_ARTICLE,
-        payload: { ...res.data, User: { name: user.userInfo.name }}
-    })
-    history.push('/')
+    try {
+        console.log(article)
+        debugger
+        const user = store.getState().user
+        let formData = new FormData()
+        for ( var key in article ) {
+            formData.append(key, article[key]);
+        }
+        formData.append('UserId', user.userInfo.id)
+        //console.log('article', formData.get())
+        
+        const res = await axios.post('/api/blogpost', formData)
+        console.log(res)
+        dispatch({
+            type: BlogActionTypes.POST_ARTICLE,
+            payload: { ...res.data, User: { name: user.userInfo.name }}
+        })
+        history.push('/')
+
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export const deleteArticle = (articleId) => async dispatch => {
