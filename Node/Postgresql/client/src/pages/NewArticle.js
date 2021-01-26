@@ -14,7 +14,12 @@ const ArticleForm = ({existingArticle, onSubmit }) => {
 
     const submit = e => {
         e.preventDefault()
+        console.log({...article, imageUrl: this.fileUpload.files[0]})
         onSubmit(article)
+    }
+
+    const filechange = e => {
+        console.log(e.target.files[0])
     }
 
     return(
@@ -22,6 +27,7 @@ const ArticleForm = ({existingArticle, onSubmit }) => {
             <label htmlFor="article-title">Title</label><br />
             <input id="article-title" value={article.title} onChange={e=>setArticle({...article, title: e.target.value })}></input><br />
             <label htmlFor="article-content">Content</label><br/>
+            <input type="file" ref={(ref) => this.fileUpload = ref} />
             <textarea id="article-content" value={article.content} onChange={e=>setArticle({...article, content:e.target.value})} /><br />
             <button type="submit" form="article-form" value="Submit">Submit</button>
         </form>
@@ -31,7 +37,8 @@ const ArticleForm = ({existingArticle, onSubmit }) => {
 ArticleForm.defaultProps = {
     existingArticle: {
         title:'',
-        content:''
+        content:'',
+        imageUrl:null
     }
 }
 

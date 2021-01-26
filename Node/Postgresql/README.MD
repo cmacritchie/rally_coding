@@ -19,10 +19,9 @@ https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simpl
 
 https://www.codementor.io/@mayowa.a/how-to-build-a-simple-session-based-authentication-system-with-nodejs-from-scratch-6vn67mcy3
 
-Tormorrow Cookie Session setup.
+NOTE: We could include the image url when grabbing the users, but that slows down the JSON fetch. Instead, set up the route and query it from there
 
-static login.
-Protected Routes
+Send emails too? could be good
 
 CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, token TEXT)
 INSERT INTO users(name, email, password) VALUES ('Hugh Jackman', 'jackman@xmen.com', 'swordfish' )

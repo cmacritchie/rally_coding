@@ -1,15 +1,16 @@
 const express = require('express')
 const BlogPost = require('../models/blogModel');
-const User = require('../models/userModel');
-const sessionChecker = require('../middleware/sessionCheck');
-const multer = require('multer');
+const User = require('../models/userModel')
+const sessionChecker = require('../middleware/sessionCheck')
+const multer = require('multer')  //for image upload
+const sharp = require('sharp') 
 const upload = multer({
-    // 'dest': 'images',
-    'limits': {
-        'fileSize':1000000
+    // 'dest': 'images',  //saves in this folder
+    'limits': { 
+        'fileSize':1000000   //1 mb
     },
     fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|PNG)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|PNG)$/)) {   //only these files types
             return cb(new Error('please upload an image'))
         }
         cb(undefined, true)
@@ -17,19 +18,6 @@ const upload = multer({
 })
 
 const router = new express.Router()
-
-
-//router test image upload with Multer
-//put in sessionchecker before
-router.post('/upload', upload.single('upload'), async (req, res) => {
-    const user = await User.findOne({ where: { id: req.session.user.id }})
-    await user.update()
-    req.file.buffer
-    res.send()
-}, (error, req, res, next) => {
-    res.status(400).send({ error: error.message})
-})
-
 
 router.get('/api/blogpost', async (req, res) => {
     try {
@@ -56,17 +44,36 @@ router.get('/api/blogpost/:id', async (req, res) => {
     }
 })
 
-router.post('/api/blogpost',sessionChecker, async (req, res) => {
-    console.log("in blogpost", req.body)
+//upload image if you want
+// router.post('/api/blogpost',sessionChecker, async (req, res) => {
+    router.post('/api/blogpost', upload.single('upload'), async (req, res) => {   //uses upload header in key
     try {
+        const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+        
         const blogpost = BlogPost.build({
-            ...req.body
+            ...req.body,
+            imageUrl: buffer
         })
         await blogpost.save()
-        // console.log("saved", blogpost)
         res.status(201).send(blogpost)
     } catch (e) {
         res.status(400).send(e)
+    }
+})
+
+//turn route into link for image
+router.get('/api/blogpost/:id/avatar', async (req, res) => {
+    try {
+        const blogpost = await BlogPost.findOne({ where: { id: req.params.id } });
+
+        if(!blogpost || !blogpost.imageUrl) {
+            throw Error()
+        }
+        res.set('Content-Type', 'image/png')
+        res.send(blogpost.imageUrl)
+
+    } catch (e) {
+        res.status(404).send()
     }
 })
 

@@ -17,7 +17,7 @@ const blogSchema = {
         type: DataTypes.STRING
     },
     imageUrl: {
-        type: DataTypes.STRING
+        type: DataTypes.BLOB
     },
     UserId: {
         type: DataTypes.INTEGER,
