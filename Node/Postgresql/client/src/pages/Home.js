@@ -42,7 +42,6 @@ const Home = () => {
                                 }
                             </div>
                             <br />
-                            {console.log(article.id)}
                             {article.imageUrl &&
                                 <img src={`data:image/jpg;base64, ${Buffer.from(article.imageUrl.data).toString('base64')}`} />
                             }

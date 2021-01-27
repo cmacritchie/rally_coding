@@ -23,13 +23,13 @@ const Signup = () => {
     }
 
     return(
-        <>
-        <h1> Sign Up</h1>
-        <Credentials onSubmit={submit} email={true} />
-        {(user.loginError && !user.failAcknowledge) &&
-            <h1>Failed to Login User</h1>
-        }
-        </>
+        <div className='login-wrapper'>
+            <h1> Sign Up</h1>
+            <Credentials onSubmit={submit} email={true} />
+            {(user.loginError && !user.failAcknowledge) &&
+                <h1>Failed to Login User</h1>
+            }
+        </div>
     )
 }
 

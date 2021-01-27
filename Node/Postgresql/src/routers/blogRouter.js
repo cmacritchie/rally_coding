@@ -10,7 +10,8 @@ const upload = multer({
         'fileSize':1000000   //1 mb
     },
     fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|PNG)$/)) {   //only these files types
+        console.log('original nale', file.originalname)
+        if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {   //only these files types
             return cb(new Error('please upload an image'))
         }
         console.log('file', file)

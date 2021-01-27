@@ -9,7 +9,6 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NewArticle from './pages/NewArticle'
-import UserSettings from './pages/UserSettings'
 import protectedRoute from './HOC/protectedRoute'
 
 import { getMe } from './actions/userActions'
@@ -34,7 +33,6 @@ function App() {
       <Route path="/sign-up" component={Signup} />
       <Route exact path="/post-article" component={NewArticle} />
       <Route exact path="/post-article/:articleid" component={NewArticle} />
-      <Route exact path="/user-settings" component={UserSettings} />
     </HashRouter>
   );
 }

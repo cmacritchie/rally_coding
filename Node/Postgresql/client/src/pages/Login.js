@@ -23,13 +23,13 @@ const Login = () => {
     }
 
     return(
-        <>
+        <div className='login-wrapper'>
         <h1>Login</h1>
         <Credentials onSubmit={submit} />
         {(user.loginError && !user.failAcknowledge) &&
-            <h1>Failed to Sign up </h1>
+            <h3>Failed to Sign up </h3>
         }
-        </>
+        </div>
     )
 }
 

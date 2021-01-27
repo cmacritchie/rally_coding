@@ -2,15 +2,13 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../actions/userActions'
+import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
+    const history = useHistory();
     const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
-    const test =() => {
-        console.log('in test')
-        dispatch(logout())
-    }
     return(
     <div className="nav-bar-wrapper">
         <ul className="nav-bar">
@@ -24,8 +22,7 @@ const NavBar = () => {
             {user.isAuthenticated &&
             <>
                 <li><NavLink to='/post-article'>New Article</NavLink></li>
-                <li><NavLink to='/user-settings'>Edit User</NavLink></li>
-                <li><a onClick={()=> test()}>Logout</a></li>
+                <li><a onClick={()=> dispatch(logout(history))}>Logout</a></li>
                 <li><span>Welcome {user.userInfo.name}</span></li>
             </>
             }
