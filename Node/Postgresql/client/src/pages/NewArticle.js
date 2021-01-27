@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { postArticle, editArticle } from '../actions/blogActions'
 import { useHistory } from "react-router-dom";
 
@@ -22,12 +22,15 @@ const ArticleForm = ({existingArticle, onSubmit }) => {
     }
 
     return(
-        <form id="article-form" onSubmit={submit}>
+        <form id="article-form" className="article-form" onSubmit={submit}>
             <label htmlFor="article-title">Title</label><br />
             <input id="article-title" value={article.title} onChange={e=>setArticle({...article, title: e.target.value })}></input><br />
             <label htmlFor="article-content">Content</label><br/>
-            <input type="file" onChange={e =>filechange(e)} />
-            <textarea id="article-content" value={article.content} onChange={e=>setArticle({...article, content:e.target.value})} /><br />
+            <textarea id="article-content" 
+                value={article.content} 
+                onChange={e=>setArticle({...article, content:e.target.value})} 
+                rows="10" cols="60"/><br />
+            <input type="file" onChange={e =>filechange(e)} /><br />
             <button type="submit" form="article-form" value="Submit">Submit</button>
         </form>
     )
@@ -44,7 +47,6 @@ ArticleForm.defaultProps = {
 const ArticleWrapper = ({ match, }) => {
     const history = useHistory();
     const dispatch = useDispatch()
-    const user = useSelector((state) => state.user)
     const [fetchedArticle, setFetchedArticle] = useState({ title:'', content:''})
     
     useEffect(() => {
@@ -54,7 +56,7 @@ const ArticleWrapper = ({ match, }) => {
             const res = await axios.get(`/api/blogpost/${articleId}`)
             setFetchedArticle(res.data);
         }
-        if(Object.keys(params).includes('articleid')){
+        if(Object.keys(params).includes('articleid')) {
             fetchArticle(params.articleid)
         }
     },[])
@@ -67,7 +69,6 @@ const ArticleWrapper = ({ match, }) => {
         }
         else {
             console.log("creat Article")
-            // dispatch(postArticle({...article, UserId: user.userInfo.id }, history))
             dispatch(postArticle({...article }, history))
         }
     }
