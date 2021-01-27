@@ -12,23 +12,20 @@ export const UserActionTypes = {
 export const getMe = () => async dispatch => {
 
     try{
-        const res = await axios.get('/api/me',);
-        console.log("good", res)
+        const res = await axios.get('/api/me')
         dispatch({
             type: UserActionTypes.LOGIN_SUCCESS,
             payload: res.data
         })
     
     } catch (e) {
-        console.log('bad', e)
+        console.log(e)
     }
 }
 
 export const registerUser = (newUser, history) => async dispatch => {
-    console.log("inside action ",newUser)
     try{
         const res = await axios.post('/api/user', newUser);
-        console.log(res);
         dispatch({
             type: UserActionTypes.REGISETER_USER,
             payload: res.data
@@ -48,7 +45,6 @@ export const loginUser = (credentials, history) => async dispatch => {
         })
         history.push('/')
     } catch (e) {
-        console.log(e)
         dispatch({ type: UserActionTypes.LOGIN_FAIL })
     }
 }

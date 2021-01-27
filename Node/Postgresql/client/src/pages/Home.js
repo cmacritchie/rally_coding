@@ -16,8 +16,12 @@ const Home = () => {
         }
     },[blog.loaded])
 
+    if(!blog.loaded) {
+        return <div className="blog-posts">Loading...</div>
+    }
+
     if(blog.articles.length === 0) {
-        return <h1> No Blog posts. Yet</h1>
+        return <div className="blog-posts">No Blog Posts.</div>
     }
     
     if(blog.articles.length > 0) {
@@ -43,7 +47,11 @@ const Home = () => {
                             </div>
                             <br />
                             {article.imageUrl &&
+                            <>
+                                {/* <img src={`/api/blogpost/1/avatar`} />  */}
+                                {/* This is an alternative if the article had the image */}
                                 <img src={`data:image/jpg;base64, ${Buffer.from(article.imageUrl.data).toString('base64')}`} />
+                            </>
                             }
                             {/* The below works too: */}
                             {/* <img src={`/api/blogpost/1/avatar`} /> */}
