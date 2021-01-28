@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
 const cookieCheck = require('./middleware/cookieCheck');
-const sessionChecker = require('./middleware/sessionCheck')
 
 //Databases
 require('./db/postgresql')
@@ -27,10 +26,10 @@ const app = express()
 const port = process.env.PORT || 5000
 
 //using
-app.set('trust proxy', 1)
-// app.use(express.json())
-app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.set('trust proxy', 1) //TODO check why we do this
+// app.use(express.json()) //TODO check why we do this
+app.use(morgan('dev')) 
+app.use(bodyParser.json()) //TODO check why we do this
 app.use(bodyParser.urlencoded({ extended: true }));  //parse parameters to req.body
 app.use(cookieParser()); //access cookies in browser
 
@@ -64,18 +63,6 @@ app.use(session({
 // app.use(session(sess))
 
 app.use(cookieCheck)
-
-app.get('/api/', sessionChecker, (req, res) => {
-    res.send(`Hello World`);
-    // if (req.session.views) {
-    //     req.session.views++;
-    //   }
-    //   else {
-    //     req.session.views = 1;
-    //   }
-    //   res.send(`${req.session.views} views`);
-})
-
 app.use(userRouter)
 app.use(blogRouter)
 
