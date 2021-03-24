@@ -59,12 +59,25 @@ require('dotenv').config()
 // }
 
 const bookGymSession = async () => {
-    const browser = await puppeteer.launch({headless: false, args: ["--disable-notifications"]})
-    const context = browser.defaultBrowserContext()
+    const browser = await puppeteer.launch({headless: true, }) //defaultViewport: null })
+    // const context = browser.defaultBrowserContext()
+    // const context = await browser.createIncognitoBrowserContext();
     // await context.overridePermissions('https://www.goodlifefitness.com/', ['geolocation'])
     // context.overridePermissions('https://www.goodlifefitness.com/', ["geolocation", "notifications"]);
     const page = await browser.newPage()
-    await page.setGeolocation({latitude: parseFloat(0), longitude: parseFloat(0)})
+    await page.setViewport({
+      width: 1920,
+      height: 1080,
+      deviceScaleFactor: 1,
+    });
+    // await page.setGeolocation({latitude: parseFloat(51.044), longitude: parseFloat(114.072)})
+    page.on("popup", () => {
+      console.log("this is fucked")
+    })
+    page.on('dialog', async dialog => {
+      console.log("BAD MESSAGE", dialog.message());
+      await dialog.dismiss();
+    });
     await page.goto('https://www.goodlifefitness.com/')
 
     const userName =process.env.USER_NAME; 
@@ -85,31 +98,53 @@ const bookGymSession = async () => {
         // //awaits club page and navigates to possible workouts
         await page.waitFor(2000); //change to 5
         await page.goto("https://www.goodlifefitness.com/book-workout.html#no-redirect")
-        await page.evaluateOnNewDocument(function() {
-            navigator.geolocation.getCurrentPosition = function (cb) {
-              setTimeout(() => {
-                cb({
-                  'coords': {
-                    accuracy: 21,
-                    altitude: null,
-                    altitudeAccuracy: null,
-                    heading: null,
-                    latitude: 23.129163,
-                    longitude: 113.264435,
-                    speed: null
-                  }
-                })
-              }, 1000)
-            }
-          });
-        page.on('dialog', async dialog => {
-            console.log(dialog.message());
-            await dialog.dismiss();
-            });
+        // await page.evaluateOnNewDocument(function() {
+        //     navigator.geolocation.getCurrentPosition = function (cb) {
+        //       setTimeout(() => {
+        //         cb({
+        //           'coords': {
+        //             accuracy: 21,
+        //             altitude: null,
+        //             altitudeAccuracy: null,
+        //             heading: null,
+        //             latitude: 23.129163,
+        //             longitude: 113.264435,
+        //             speed: null
+        //           }
+        //         })
+        //       }, 1000)
+        //     }
+        //   });
+        // page.on('dialog', async dialog => {
+        //   console.log("DIALOGGGGG")
+        //     console.log(dialog.message());
+        //     await dialog.dismiss();
+        //     });
     
+        console.log('partially in')
         await page.waitForSelector('#js-class-schedule-weekdays-container')
-        await page.waitFor(2000);
-        await page.click("div#day-number-7 > li:nth-child(5) button");
+        await page.waitFor(3000);
+        await page.click('li.js-class-weekday[data-day="day-number-7"]')
+        // await context.close();
+        console.log('out')
+        let element = await page.$('div#day-number-7 > li:nth-child(2)') //> div:nth-child(2) > div > div:nth-child(1) > button')
+        let workoutid = await page.evaluate(el => el.getAttribute("data-workout-id"), element)
+        // let element = await page.$('div#day-number-7 > li:nth-child(2)', element => element.innerHTML)
+        console.log("data workout id", workoutid)
+        await page.waitFor(3000);
+        await page.click('button[data-workout-id="' + workoutid + '"]');
+        await page.waitFor(3000);
+        // await page.$eval('button.js-terms-agreement-cta[data-workout-id="' + workoutid + '"]', e => e.setAttribute("aria-disabled","false"))
+        await page.click('input#js-workout-booking-agreement-input[name="booking-agreement"]');
+        // await page.waitFor('button.modal-class-action');
+        // await page.click('button.modal-class-action');
+        await page.click('button.modal-class-action[data-workout-id="' + workoutid + '"]');
+        //
+        console.log('booked?')
+
+        //LOOKS LIKE IT WORKS NOW, DEPLOY and ENJOY
+        
+        
         // //selects the open dates and selects the last date in the row (1 week from now)
         // await page.waitFor('#date-container')
         // await page.click('#date-container > .date-tile-container > div:last-child') //good version
