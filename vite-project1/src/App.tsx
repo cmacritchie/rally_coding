@@ -8,7 +8,8 @@ import {
   Link,
 } from "react-router-dom";
 import './App.css'
-import firebaseconfig from './config/firebaseconfig';
+// import firebaseconfig from './config/firebaseconfig';
+import firebaseconfig from './config/firebaseconfig'
 import { AuthProvider } from './context/auth';
 import RQPage from './pages/ReactQuery'
 import Home from './pages/Home'
@@ -18,6 +19,7 @@ import Header from './components/Header'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
+import { getFirestore } from 'firebase/firestore'
 
 
 // Import the functions you need from the SDKs you need
@@ -28,24 +30,16 @@ import 'firebase/compat/auth'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyC2o-lE5ouxWHA_VPXjaLLX6yI-QOJPyaQ",
-//   authDomain: "craigchat-59ff7.firebaseapp.com",
-//   projectId: "craigchat-59ff7",
-//   storageBucket: "craigchat-59ff7.appspot.com",
-//   messagingSenderId: "777912052444",
-//   appId: "1:777912052444:web:8ac745d83afcc5338aa219",
-//   measurementId: "G-QQGHW2RHJV"
-// };
 
 // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const queryClient = new QueryClient()
 
-firebase.initializeApp(firebaseconfig)
+const app = firebase.initializeApp(firebaseconfig)
 const auth = firebase.auth()
-const firestore = firebase.firestore()
+export const db = getFirestore(app);
+
 
 function App() {
   

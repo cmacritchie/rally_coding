@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { chatRooms } from './CraigChat'
+import MessageInputs from '../components/MessageInputs'
 
 const ChatRoom = () => {
   const params = useParams()
@@ -15,7 +16,7 @@ const ChatRoom = () => {
   return (
     <div>
       <h3>{room.title} ChatRoom</h3>
-
+    <MessageInputs roomId={room.id} />
     </div>
   )
 }
