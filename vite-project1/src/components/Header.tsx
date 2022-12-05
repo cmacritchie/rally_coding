@@ -9,15 +9,28 @@ export default function Header() {
     <div>
       <nav>
         <ul>
-        <Link to="/">Home</Link>
-        <Link to="/rqpage">RQ Page</Link>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/rqpage">RQ Page</Link>
+          </li>
+          <li>
+            <Link to="/craigchat">Craig Chat</Link>{'   '}
+          </li>
         </ul>
       </nav>
 
       <hr />
+      {user ? 
+      <h6>Logged In</h6>
+      :
       <button onClick={login} className="login">
-                    Login with Google
-                </button>
+          Login with Google
+      </button>
+      
+}
+                
 
       {/* An <Outlet> renders whatever child route is currently active,
           so you can think about this <Outlet> as a placeholder for

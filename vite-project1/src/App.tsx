@@ -12,6 +12,8 @@ import firebaseconfig from './config/firebaseconfig';
 import { AuthProvider } from './context/auth';
 import RQPage from './pages/ReactQuery'
 import Home from './pages/Home'
+import CraigChat from './pages/CraigChat'
+import ChatRoom from './pages/ChatRoom';
 import Header from './components/Header'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
@@ -55,22 +57,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rqpage" element={<RQPage />} />
+          <Route path="/craigchat" element={<CraigChat />} />
+          <Route path="room/:id" element={<ChatRoom />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
     </AuthProvider>
   )
 }
-
-// const Header = () => {
-//   return(
-//     <div>
-//       <nav>
-//         <Link to="/">Home</Link>
-//         <Link to="/rqpage">RQ Page</Link>
-//       </nav>
-//     </div>
-//   )
-// }
 
 export default App
